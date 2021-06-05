@@ -1,4 +1,4 @@
-class SecretDiary
+class Lock
   attr_reader :locked
 
   def initialize
@@ -6,22 +6,14 @@ class SecretDiary
   end 
 
   def lock
+    'Locked'
     @locked = true
-   'Locked'
   end
 
   def unlock
-    @locked = false
     'Unlocked'
+    @locked = false
+
   end
 
-  def add_entry
-    fail 'Locked, no entry!' if @locked == true
-    'Begin entry!'
-  end
-
-  def get_entries
-    fail 'Locked, cannot display entries!' if @locked == true
-    'Showing entries:'
-  end
 end

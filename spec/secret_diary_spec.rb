@@ -11,36 +11,45 @@
 #When the user locks the diary, by calling `lock`, `add_entry` and `get_entries` should, again, throw an error.
 require 'secret_diary.rb'
 
-describe SecretDiary do
+describe Lock do
 
   it 'SecretDiary is locked' do
-     expect(subject.lock).to eq('Locked')
+    expect(subject.lock).to eq(true)
   end
-  
 
   it 'SecretDiary is unlocked' do
-      expect(subject.unlock).to eq('Unlocked')
+      expect(subject.unlock).to eq(false)
   end
 
+end
+
+describe Entry do
+  let(:lock) { Lock.new }
   describe '#add_entry' do
     it 'Add entry' do
-      subject.unlock
-      expect(subject.add_entry).to eq('Begin entry!')
+      lock.unlock
+      entry = Entry.new(lock)
+      expect(entry.add_entry).to eq('Begin entry!')
     end
 
     it 'raises error when locked' do
-      expect{ subject.add_entry }.to raise_error 'Locked, no entry!'
+      lock = Lock.new
+      entry = Entry.new(lock)
+      expect{ entry.add_entry }.to raise_error 'Locked, no entry!'
     end
   end
 
   describe '#get_entries' do
     it 'Get entries' do
-      subject.unlock
-      expect(subject.get_entries).to eq('Showing entries:')
+      lock.unlock
+      entry = Entry.new(lock)
+      expect(entry.get_entries).to eq('Showing entries:')
     end
 
     it 'raises error when locked' do
-      expect{ subject.get_entries }.to raise_error 'Locked, cannot display entries!'
+      lock = Lock.new
+      entry = Entry.new(lock)
+      expect{ entry.get_entries }.to raise_error 'Locked, cannot display entries!'
     end
   end
 
